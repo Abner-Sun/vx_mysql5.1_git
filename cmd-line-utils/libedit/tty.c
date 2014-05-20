@@ -551,6 +551,14 @@ tty_setup(EditLine *el)
 					el->el_tty.t_c[EX_IO][rst] =
 					    el->el_tty.t_c[TS_IO][rst];
 		}
+
+/*sfh add, in May 20, 2014,9:33:12*/
+#define IOC_IN      0x80000000
+#define _IOW_(x,y,t)    (IOC_IN|((sizeof(t)&IOCPARM_MASK)<<16)|(x<<8)|y)
+#define TCSADRAIN2 _IOW_('t',0xc2, struct termios)
+/*sfh add end*/
+
+
 		tty__setchar(&el->el_tty.t_ex, el->el_tty.t_c[EX_IO]);
 		if (tty_setty(el, TCSADRAIN, &el->el_tty.t_ex) == -1) {
 #ifdef DEBUG_TTY

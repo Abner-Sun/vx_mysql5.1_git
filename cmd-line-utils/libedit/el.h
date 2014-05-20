@@ -112,6 +112,10 @@ typedef struct el_state_t {
 #include "sig.h"
 #include "help.h"
 #include "read.h"
+/*sfh add, in May 16, 2014,8:32:37
+Because,I do not find information about the definition of SIGWINCH in el.c or head files included by el.c ,so I add sigLib.h in el.h .  */
+#include "sigLib.h"
+/*sfh add end */
 
 struct editline {
 	Char		 *el_prog;	/* the program name		*/

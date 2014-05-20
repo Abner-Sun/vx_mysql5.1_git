@@ -958,6 +958,7 @@ terminal_get_size(EditLine *el, int *lins, int *cols)
 	*cols = Val(T_co);
 	*lins = Val(T_li);
 
+/* sfh add, in May 19, 2014,13:32:18
 #ifdef TIOCGWINSZ
 	{
 		struct winsize ws;
@@ -968,7 +969,7 @@ terminal_get_size(EditLine *el, int *lins, int *cols)
 				*lins = ws.ws_row;
 		}
 	}
-#endif
+#endif */
 #ifdef TIOCGSIZE
 	{
 		struct ttysize ts;

@@ -36,6 +36,11 @@
 #ifndef _h_chartype_f
 #define _h_chartype_f
 
+/*sfh add , in May 12, 2014,10:37:43
+    In file:config.h , I do not find the option of __STDC_ISO_10646__. SO,I obviously define the __STDC_ISO_10646__
+*/
+
+#define __STDC_ISO_10646__ 
 
 
 #ifdef WIDECHAR

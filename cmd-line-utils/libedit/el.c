@@ -50,7 +50,8 @@ static char sccsid[] = "@(#)el.c	8.2 (Berkeley) 1/3/94";
 #include <stdarg.h>
 #include <ctype.h>
 #include <locale.h>
-#include <langinfo.h>
+/*sfh add,in May 15, 2014,10:28:13
+#include <langinfo.h>*/
 #include "el.h"
 
 /* el_init():
