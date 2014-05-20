@@ -48113,7 +48113,10 @@ $as_echo "$as_me: error: unknown endianness
 		;;
   esac
 
-
+#注释掉本模块
+while ：
+do
+	break
   { $as_echo "$as_me:$LINENO: checking whether GCC atomic builtins are available" >&5
 $as_echo_n "checking whether GCC atomic builtins are available... " >&6; }
   # either define HAVE_IB_GCC_ATOMIC_BUILTINS or not
@@ -48305,6 +48308,7 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$a
 fi
 
 
+done
 
   { $as_echo "$as_me:$LINENO: checking whether Solaris libc atomic functions are available" >&5
 $as_echo_n "checking whether Solaris libc atomic functions are available... " >&6; }
@@ -48433,6 +48437,11 @@ _ACEOF
 
   fi
 
+
+  #注释掉本模块
+  while ：
+  do
+	  break
   { $as_echo "$as_me:$LINENO: checking whether pthread_t can be used by Solaris libc atomic functions" >&5
 $as_echo_n "checking whether pthread_t can be used by Solaris libc atomic functions... " >&6; }
   # either define HAVE_IB_ATOMIC_PTHREAD_T_SOLARIS or not
@@ -48528,7 +48537,7 @@ rm -rf conftest.dSYM
 rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 
-
+done
 
   # this is needed to know which one of atomic_cas_32() or atomic_cas_64()
   # to use in the source
@@ -52322,7 +52331,7 @@ done
 
     cfgfile="${ofile}T"
     trap "$RM \"$cfgfile\"; exit 1" 1 2 15
-    $RM "$cfgfile"
+#    $RM "$cfgfile"
 
     cat <<_LT_EOF >> "$cfgfile"
 #! $SHELL
