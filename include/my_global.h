@@ -62,7 +62,7 @@
 #endif
 
 #if defined(i386) && !defined(__i386__)
-#define __i386__
+define __i386__
 #endif
 
 /* Macros to make switching between C and C++ mode easier */
@@ -893,7 +893,8 @@ typedef SOCKET_SIZE_TYPE size_socket;
 #endif /* HAVE_FINITE */
 #endif /* isfinite */
 
-#ifndef HAVE_ISNAN
+/*sfh add.in May 22, 2014,9:20:6*/
+#ifndef isnan
 #define isnan(x) ((x) != (x))
 #endif
 
@@ -940,7 +941,8 @@ typedef long long	my_ptrdiff_t;
 /* Size to make adressable obj. */
 #define ALIGN_PTR(A, t) ((t*) MY_ALIGN((A),sizeof(t)))
 			 /* Offset of field f in structure t */
-#define OFFSET(t, f)	((size_t)(char *)&((t *)0)->f)
+//sfh add,in May 21, 2014,14:52:47   #define OFFSET(t, f)	((size_t)(char *)&((t *)0)->f)
+
 #define ADD_TO_PTR(ptr,size,type) (type) ((uchar*) (ptr)+size)
 #define PTR_BYTE_DIFF(A,B) (my_ptrdiff_t) ((uchar*) (A) - (uchar*) (B))
 
@@ -1414,7 +1416,6 @@ do { doubleget_union _tmp; \
 */
 
 #ifdef WORDS_BIGENDIAN
-
 #define ushortget(V,M)  do { V = (uint16) (((uint16) ((uchar) (M)[1]))+\
                                  ((uint16) ((uint16) (M)[0]) << 8)); } while(0)
 #define shortget(V,M)   do { V = (short) (((short) ((uchar) (M)[1]))+\

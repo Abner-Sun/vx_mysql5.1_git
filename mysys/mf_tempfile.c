@@ -21,7 +21,8 @@
 #ifdef HAVE_PATHS_H
 #include <paths.h>
 #endif
-
+/* sfh add ,in May 21, 2014,13:56:23 */
+#define HAVE_MKSTEMP 1   /* Define to 1 if you have the `mkstemp' function. */
 
 
 /*
