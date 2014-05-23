@@ -1342,7 +1342,7 @@
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
 
-/*sfh add ,in May 23, 2014,9:37:20
+sfh add ,in May 23, 2014,9:37:20
 #if defined AC_APPLE_UNIVERSAL_BUILD
 # if defined __BIG_ENDIAN__
 #  define WORDS_BIGENDIAN 1
@@ -1351,7 +1351,7 @@
 # ifndef WORDS_BIGENDIAN
 #  define WORDS_BIGENDIAN 1
 # endif
-#endif */
+#endif 
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 #define _FILE_OFFSET_BITS 64
