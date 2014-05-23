@@ -62,7 +62,7 @@
 #endif
 
 #if defined(i386) && !defined(__i386__)
-define __i386__
+#define __i386__
 #endif
 
 /* Macros to make switching between C and C++ mode easier */
@@ -942,6 +942,9 @@ typedef long long	my_ptrdiff_t;
 #define ALIGN_PTR(A, t) ((t*) MY_ALIGN((A),sizeof(t)))
 			 /* Offset of field f in structure t */
 //sfh add,in May 21, 2014,14:52:47   #define OFFSET(t, f)	((size_t)(char *)&((t *)0)->f)
+#ifndef OFFSET
+#define OFFSET(t, f)	((size_t)(char *)&((t *)0)->f)
+#endif
 
 #define ADD_TO_PTR(ptr,size,type) (type) ((uchar*) (ptr)+size)
 #define PTR_BYTE_DIFF(A,B) (my_ptrdiff_t) ((uchar*) (A) - (uchar*) (B))
