@@ -29,6 +29,38 @@
 #include <nks/time.h>
 #endif
 
+//sfh add ,in May 27, 2014,9:39:40
+int gettimeofday(struct timeval *tp, void *z)
+{
+  struct timespec t_spec;
+
+    
+    if(tp == NULL)
+        return -1;
+
+    if(clock_gettime(CLOCK_REALTIME, &t_spec) == OK)
+    {
+        /* clock_gettime returns nanoseconds, while Ip_timeval holds micro seconds. */
+        tp->tv_sec = t_spec.tv_sec;
+        tp->tv_usec = t_spec.tv_nsec / 1000;
+    }
+    else
+    {
+        tp->tv_sec = 0;
+        tp->tv_usec = 0;
+        return -1;
+    }
+    return 0;
+}
+/*#include <sys/timeb.h>                                                                                   
+#define gettimeofday(t,z) \
+	{ \
+	struct _timeb _gtodtmp; \
+   _ftime (&_gtodtmp); \
+   (t)->tv_sec = _gtodtmp.time; \
+   (t)->tv_usec = _gtodtmp.millitm * 1000; \
+   } */
+//sfh add end
 ulonglong my_getsystime()
 {
 #ifdef HAVE_CLOCK_GETTIME

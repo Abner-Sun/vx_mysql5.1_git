@@ -112,6 +112,9 @@ extern pthread_mutex_t LOCK_gethostbyname_r;
 */
 
 struct hostent *
+//sfh add ,in May 26, 2014,11:2:5
+#define h_errno errno
+//sfh add end
 my_gethostbyname_r(const char *name,
                    struct hostent *result __attribute__((unused)), 
                    char *buffer __attribute__((unused)),

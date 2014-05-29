@@ -24,6 +24,10 @@ extern "C" {
 
 #include <sys/stat.h>
 
+//sfh add .in May 26, 2014,8:35:23
+#    define S_IREAD	00400
+
+
 	/* Defines for my_dir and my_stat */
 
 #define MY_S_IFMT	S_IFMT	/* type of file */
