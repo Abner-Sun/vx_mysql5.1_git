@@ -36,7 +36,9 @@
 #include <my_getopt.h>
 
 #if !defined(_AIX) && !defined(h_errno)
-extern int h_errno;
+#define h_errno errno
+/*sfh add in May 30, 2014,8:57:3
+extern int h_errno;*/
 #endif
 
 static my_bool silent;

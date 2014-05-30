@@ -41,6 +41,13 @@ struct utimbuf {
 
 #define REDEL_EXT ".BAK"
 
+//sfh add in May 30, 2014,8:52:16
+int chown(char *to, unsigned short st_uid, unsigned short st_gid)
+{
+//
+}
+//sfh add end 
+
 int my_redel(const char *org_name, const char *tmp_name, myf MyFlags)
 {
   int error=1;

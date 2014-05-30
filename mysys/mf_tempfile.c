@@ -56,6 +56,38 @@
 
 */
 
+//sfh add in May 29, 2014,13:46:6
+#include <ioLib.h>
+static unsigned int FileUnique_prama;
+int __gen_tempname (char *tmpl, int flags)
+{
+  int len;
+  int fd = -1;
+  int i;
+ //to make sure that the filename is unique
+  for(i=0;i<4;i++)
+  	tmpl[i]=(0xff<<i)&FileUnique_prama;
+  len = strlen (tmpl);
+
+   fd =open(tmpl,(flags & ~O_ACCMODE)| O_RDWR | O_CREAT | O_EXCL);
+	 
+
+   if (fd >= 0)
+	{
+      FileUnique_prama++;
+	  return fd;
+	}
+      else 
+	return -1;
+    
+ }
+
+int mkstemp (char *template)
+	{
+	  return __gen_tempname (template, 0);
+	}
+//sfh add end 
+
 File create_temp_file(char *to, const char *dir, const char *prefix,
 		      int mode __attribute__((unused)),
 		      myf MyFlags __attribute__((unused)))
