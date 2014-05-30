@@ -2388,7 +2388,7 @@ static void getvolumeID(BYTE *volumeName)
   Key_t rootKey= 0, fileKey= 0;
   QUAD getInfoMask;
   zInfo_s info;
-  STATUS status;
+  STATUS status; //sfh add :notice in ./client/mysql.cc , I modify STATUS to STATUS_MY in order to aviod conflicting declaration 'typedef struct st_status STATUS' in mysql.cc  and /home/sfh/vx68_mysql/WindRiver68/vxworks-6.8/target/usr/h/types/vxTypesOld.h:157: error: 'STATUS' has a previous declaration as 'typedef _Vx_STATUS STATUS'
 
   /* Get the root key */
   if ((status= zRootKey(0, &rootKey)) != zOK)

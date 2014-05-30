@@ -157,6 +157,11 @@ static void get_password(char *to,uint length,int fd, my_bool echo)
 }
 #endif /* ! HAVE_GETPASS */
 
+//sfh add in May 30, 2014,10:2:52
+#define TCSADRAIN	TC_PX_SETATTRD
+#define TC_PX_SETATTRD	_IOW_('t',0xc2, struct termios)
+#define _IOW_(x,y,t)	(IOC_IN|((sizeof(t)&IOCPARM_MASK)<<16)|(x<<8)|y)
+//sfh add end 
 
 char *get_tty_password(const char *opt_message)
 {

@@ -129,7 +129,7 @@ typedef struct st_status
   char *file_name;
   LINE_BUFFER *line_buff;
   bool batch,add_to_history;
-} STATUS;
+} STATUS_MY; //sfh add in May 30, 2014,12:23:1  STATUS
 
 
 static HashTable ht;
@@ -167,7 +167,7 @@ static String glob_buffer,old_buffer;
 static String processed_prompt;
 static char *full_username=0,*part_username=0,*default_prompt=0;
 static int wait_time = 5;
-static STATUS status;
+static STATUS_MY status;
 static ulong select_limit,max_join_size,opt_connect_timeout=0;
 static char mysql_charsets_dir[FN_REFLEN+1];
 static const char *xmlmeta[] = {
@@ -4046,7 +4046,7 @@ static int com_source(String *buffer __attribute__((unused)),
   char source_name[FN_REFLEN], *end, *param;
   LINE_BUFFER *line_buff;
   int error;
-  STATUS old_status;
+  STATUS_MY old_status; //sfh add in May 30, 2014,12:24:12 STATUS
   FILE *sql_file;
 
   /* Skip space from file name */
