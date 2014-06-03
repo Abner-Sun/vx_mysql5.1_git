@@ -3180,7 +3180,10 @@ end:
   return error;				/* New command follows */
 }
 
-
+FILE *popen(char *str,char *mode)
+{
+      
+}
 static void init_pager()
 {
 #ifdef USE_POPEN

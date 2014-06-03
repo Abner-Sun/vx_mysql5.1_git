@@ -1118,7 +1118,7 @@ public:
   /** Length of ref (1-8 or the clustered key length) */
   uint ref_length;
   FT_INFO *ft_handler;
-  enum {NONE=0, INDEX, RND} inited;
+  enum {NONE1=0, INDEX, RND} inited;
   bool locked;
   bool implicit_emptied;                /* Can be !=0 only if HEAP */
   const COND *pushed_cond;
@@ -1157,7 +1157,7 @@ public:
     estimation_rows_to_insert(0), ht(ht_arg),
     ref(0), key_used_on_scan(MAX_KEY), active_index(MAX_KEY),
     ref_length(sizeof(my_off_t)),
-    ft_handler(0), inited(NONE),
+    ft_handler(0), inited(NONE1),
     locked(FALSE), implicit_emptied(0),
     pushed_cond(0), next_insert_id(0), insert_id_for_cur_row(0),
     auto_inc_intervals_count(0)
@@ -1180,7 +1180,7 @@ public:
   {
     int result;
     DBUG_ENTER("ha_index_init");
-    DBUG_ASSERT(inited==NONE);
+    DBUG_ASSERT(inited==NONE1);
     if (!(result= index_init(idx, sorted)))
       inited=INDEX;
     DBUG_RETURN(result);
@@ -1189,22 +1189,22 @@ public:
   {
     DBUG_ENTER("ha_index_end");
     DBUG_ASSERT(inited==INDEX);
-    inited=NONE;
+    inited=NONE1;
     DBUG_RETURN(index_end());
   }
   int ha_rnd_init(bool scan)
   {
     int result;
     DBUG_ENTER("ha_rnd_init");
-    DBUG_ASSERT(inited==NONE || (inited==RND && scan));
-    inited= (result= rnd_init(scan)) ? NONE: RND;
+    DBUG_ASSERT(inited==NONE1 || (inited==RND && scan));
+    inited= (result= rnd_init(scan)) ? NONE1: RND;
     DBUG_RETURN(result);
   }
   int ha_rnd_end()
   {
     DBUG_ENTER("ha_rnd_end");
     DBUG_ASSERT(inited==RND);
-    inited=NONE;
+    inited=NONE1;
     DBUG_RETURN(rnd_end());
   }
   int ha_reset();

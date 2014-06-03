@@ -665,7 +665,7 @@ THD::THD()
   utime_after_lock= 0L;
   current_linfo =  0;
   slave_thread = 0;
-  bzero(&variables, sizeof(variables));
+  bzero((char *)(&variables), sizeof(variables));
   thread_id= 0;
   one_shot_set= 0;
   file_id = 0;
@@ -673,7 +673,7 @@ THD::THD()
   query_name_consts= 0;
   warn_id= 0;
   db_charset= global_system_variables.collation_database;
-  bzero(ha_data, sizeof(ha_data));
+  bzero((char *)ha_data, sizeof(ha_data));
   mysys_var=0;
   binlog_evt_union.do_union= FALSE;
   enable_slow_log= 0;

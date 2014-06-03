@@ -76,7 +76,7 @@ void *sql_calloc(size_t size)
 {
   void *ptr;
   if ((ptr=sql_alloc(size)))
-    bzero(ptr,size);
+    bzero((char *)ptr,size);
   return ptr;
 }
 

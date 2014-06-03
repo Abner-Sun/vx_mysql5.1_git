@@ -4948,37 +4948,37 @@ Field *Item::tmp_table_field_from_field_type(TABLE *table, bool fixed_length)
     field= Field_new_decimal::create_from_item(this);
     break;
   case MYSQL_TYPE_TINY:
-    field= new Field_tiny((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_tiny((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			  name, 0, unsigned_flag);
     break;
   case MYSQL_TYPE_SHORT:
-    field= new Field_short((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_short((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			   name, 0, unsigned_flag);
     break;
   case MYSQL_TYPE_LONG:
-    field= new Field_long((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_long((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			  name, 0, unsigned_flag);
     break;
 #ifdef HAVE_LONG_LONG
   case MYSQL_TYPE_LONGLONG:
-    field= new Field_longlong((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_longlong((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			      name, 0, unsigned_flag);
     break;
 #endif
   case MYSQL_TYPE_FLOAT:
-    field= new Field_float((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_float((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			   name, decimals, 0, unsigned_flag);
     break;
   case MYSQL_TYPE_DOUBLE:
-    field= new Field_double((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_double((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			    name, decimals, 0, unsigned_flag);
     break;
   case MYSQL_TYPE_NULL:
-    field= new Field_null((uchar*) 0, max_length, Field::NONE,
+    field= new Field_null((uchar*) 0, max_length, Field::NONE2,
 			  name, &my_charset_bin);
     break;
   case MYSQL_TYPE_INT24:
-    field= new Field_medium((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_medium((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			    name, 0, unsigned_flag);
     break;
   case MYSQL_TYPE_NEWDATE:
@@ -4995,12 +4995,12 @@ Field *Item::tmp_table_field_from_field_type(TABLE *table, bool fixed_length)
     field= new Field_datetime(maybe_null, name, &my_charset_bin);
     break;
   case MYSQL_TYPE_YEAR:
-    field= new Field_year((uchar*) 0, max_length, null_ptr, 0, Field::NONE,
+    field= new Field_year((uchar*) 0, max_length, null_ptr, 0, Field::NONE2,
 			  name);
     break;
   case MYSQL_TYPE_BIT:
     field= new Field_bit_as_char(NULL, max_length, null_ptr, 0,
-                                 Field::NONE, name);
+                                 Field::NONE2, name);
     break;
   default:
     /* This case should never be chosen */
@@ -6688,7 +6688,7 @@ bool Item_insert_value::fix_fields(THD *thd, Item **items)
   {
     Field *tmp_field= field_arg->field;
     /* charset doesn't matter here, it's to avoid sigsegv only */
-    tmp_field= new Field_null(0, 0, Field::NONE, field_arg->field->field_name,
+    tmp_field= new Field_null(0, 0, Field::NONE2, field_arg->field->field_name,
                           &my_charset_bin);
     if (tmp_field)
     {
@@ -7732,7 +7732,7 @@ Field *Item_type_holder::make_field_by_type(TABLE *table)
   case MYSQL_TYPE_ENUM:
     DBUG_ASSERT(enum_set_typelib);
     field= new Field_enum((uchar *) 0, max_length, null_ptr, 0,
-                          Field::NONE, name,
+                          Field::NONE2, name,
                           get_enum_pack_length(enum_set_typelib->count),
                           enum_set_typelib, collation.collation);
     if (field)
@@ -7741,7 +7741,7 @@ Field *Item_type_holder::make_field_by_type(TABLE *table)
   case MYSQL_TYPE_SET:
     DBUG_ASSERT(enum_set_typelib);
     field= new Field_set((uchar *) 0, max_length, null_ptr, 0,
-                         Field::NONE, name,
+                         Field::NONE2, name,
                          get_set_pack_length(enum_set_typelib->count),
                          enum_set_typelib, collation.collation);
     if (field)

@@ -2441,7 +2441,7 @@ inline void mark_as_null_row(TABLE *table)
 {
   table->null_row=1;
   table->status|=STATUS_NULL_ROW;
-  bfill(table->null_flags,table->s->null_bytes,255);
+  bfill((char *)(table->null_flags),table->s->null_bytes,255);
 }
 
 inline void table_case_convert(char * name, uint length)

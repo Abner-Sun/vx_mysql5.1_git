@@ -527,7 +527,9 @@ public:
   enum enum_state
   {
     INITIALIZED= 0, INITIALIZED_FOR_SP= 1, PREPARED= 2,
-    CONVENTIONAL_EXECUTION= 3, EXECUTED= 4, ERROR= -1
+    CONVENTIONAL_EXECUTION= 3, 
+    EXECUTED= 4, 
+    ERROR_state= -1
   };
 
   enum_state state;
@@ -568,7 +570,7 @@ public:
   {
     void *ptr;
     if ((ptr=alloc_root(mem_root,size)))
-      bzero(ptr, size);
+      bzero((char *)ptr, size);
     return ptr;
   }
   inline char *strdup(const char *str)

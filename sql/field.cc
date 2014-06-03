@@ -1076,7 +1076,7 @@ void Field_num::prepend_zeros(String *value)
     bmove_upp((uchar*) value->ptr()+field_length,
               (uchar*) value->ptr()+value->length(),
 	      value->length());
-    bfill((uchar*) value->ptr(),diff,'0');
+    bfill((char *)((uchar*) value->ptr()),diff,'0');
     value->length(field_length);
     (void) value->c_ptr_quick();		// Avoid warnings in purify
   }
@@ -1787,7 +1787,7 @@ Field *Field::new_field(MEM_ROOT *root, struct st_table *new_table,
   tmp->key_start.init(0);
   tmp->part_of_key.init(0);
   tmp->part_of_sortkey.init(0);
-  tmp->unireg_check= Field::NONE;
+  tmp->unireg_check= Field::NONE2;
   tmp->flags&= (NOT_NULL_FLAG | BLOB_FLAG | UNSIGNED_FLAG |
                 ZEROFILL_FLAG | BINARY_FLAG | ENUM_FLAG | SET_FLAG);
   tmp->reset_fields();
@@ -1872,14 +1872,14 @@ void Field_decimal::overflow(bool negative)
 	*/
 	uint whole_part=field_length- (dec ? dec+2 : 1);
 	// Fill with spaces up to the first digit
-	bfill(to, whole_part, ' ');
+	bfill((char *)to, whole_part, ' ');
 	to+=  whole_part;
 	len-= whole_part;
 	// The main code will also handle the 0 before the decimal point
       }
     }
   }
-  bfill(to, len, filler);
+  bfill((char *)to, len, filler);
   if (dec)
     ptr[field_length-dec-1]='.';
   return;
@@ -2327,7 +2327,7 @@ int Field_decimal::store(longlong nr, bool unsigned_val)
   if (dec)
   {
     to[length]='.';
-    bfill(to+length+1,dec,'0');
+    bfill((char *)(to+length+1),dec,'0');
   }
   return 0;
 }
@@ -2478,7 +2478,7 @@ Field_new_decimal::Field_new_decimal(uint32 len_arg,
                                      bool unsigned_arg)
   :Field_num((uchar*) 0, len_arg,
              maybe_null_arg ? (uchar*) "": 0, 0,
-             NONE, name, dec_arg, 0, unsigned_arg)
+             (Field::utype)NONE2, name, dec_arg, 0, unsigned_arg)
 {
   precision= my_decimal_length_to_precision(len_arg, dec_arg, unsigned_arg);
   set_if_smaller(precision, DECIMAL_MAX_PRECISION);
@@ -4780,7 +4780,7 @@ Field_timestamp::Field_timestamp(bool maybe_null_arg,
                                  CHARSET_INFO *cs)
   :Field_str((uchar*) 0, MAX_DATETIME_WIDTH,
              maybe_null_arg ? (uchar*) "": 0, 0,
-	     NONE, field_name_arg, cs)
+	     (Field::utype)NONE2, field_name_arg, cs)
 {
   /* For 4.0 MYD and 4.0 InnoDB compatibility */
   flags|= ZEROFILL_FLAG | UNSIGNED_FLAG;
@@ -6788,7 +6788,7 @@ Field_string::unpack(uchar *to,
 
   memcpy(to, from, length);
   // Pad the string with the pad character of the fields charset
-  bfill(to + length, field_length - length, field_charset->pad_char);
+  bfill((char *)(to + length), field_length - length, field_charset->pad_char);
   return from+length;
 }
 
@@ -7450,7 +7450,7 @@ uint Field_varstring::get_key_image(uchar *buff, uint length, imagetype type)
       Must clear this as we do a memcmp in opt_range.cc to detect
       identical keys
     */
-    bzero(buff+HA_KEY_BLOB_LENGTH+f_length, (length-f_length));
+    bzero((char *)(buff+HA_KEY_BLOB_LENGTH+f_length), (length-f_length));
   }
   return HA_KEY_BLOB_LENGTH+f_length;
 }
@@ -7681,7 +7681,7 @@ int Field_blob::store(const char *from,uint length,CHARSET_INFO *cs)
 
   if (!length)
   {
-    bzero(ptr,Field_blob::pack_length());
+    bzero((char *)ptr,Field_blob::pack_length());
     return 0;
   }
 
@@ -7749,7 +7749,7 @@ int Field_blob::store(const char *from,uint length,CHARSET_INFO *cs)
 
 oom_error:
   /* Fatal OOM error */
-  bzero(ptr,Field_blob::pack_length());
+  bzero((char *)ptr,Field_blob::pack_length());
   return -1; 
 }
 
@@ -7892,13 +7892,13 @@ uint Field_blob::get_key_image(uchar *buff,uint length, imagetype type_arg)
 
     if (blob_length < SRID_SIZE)
     {
-      bzero(buff, image_length);
+      bzero((char *)buff, image_length);
       return image_length;
     }
     get_ptr(&blob);
     gobj= Geometry::construct(&buffer, (char*) blob, blob_length);
     if (!gobj || gobj->get_mbr(&mbr, &dummy))
-      bzero(buff, image_length);
+      bzero((char *)buff, image_length);
     else
     {
       float8store(buff,    mbr.xmin);
@@ -7922,7 +7922,7 @@ uint Field_blob::get_key_image(uchar *buff,uint length, imagetype type_arg)
       Must clear this as we do a memcmp in opt_range.cc to detect
       identical keys
     */
-    bzero(buff+HA_KEY_BLOB_LENGTH+blob_length, (length-blob_length));
+    bzero((char *)(buff+HA_KEY_BLOB_LENGTH+blob_length), (length-blob_length));
     length=(uint) blob_length;
   }
   int2store(buff,length);
@@ -7991,7 +7991,7 @@ void Field_blob::sort_string(uchar *to,uint length)
   uint blob_length=get_length();
 
   if (!blob_length)
-    bzero(to,length);
+    bzero((char *)to,length);
   else
   {
     if (field_charset == &my_charset_bin)
@@ -8226,7 +8226,7 @@ Field_blob::unpack_key(uchar *to, const uchar *from, uint max_length,
   if (length)
     memcpy_fixed(to + packlength, &from, sizeof(from));
   else
-    bzero(to + packlength, sizeof(from));
+    bzero((char *)(to + packlength), sizeof(from));
 
   /* point to first byte of next field in 'from' */
   return from + length;
@@ -8337,7 +8337,7 @@ int Field_geom::store_decimal(const my_decimal *)
 int Field_geom::store(const char *from, uint length, CHARSET_INFO *cs)
 {
   if (!length)
-    bzero(ptr, Field_blob::pack_length());
+    bzero((char *)ptr, Field_blob::pack_length());
   else
   {
     if (from == Geometry::bad_geometry_data.ptr())
@@ -8361,7 +8361,7 @@ int Field_geom::store(const char *from, uint length, CHARSET_INFO *cs)
   return 0;
 
 err:
-  bzero(ptr, Field_blob::pack_length());  
+  bzero((char *)ptr, Field_blob::pack_length());  
   my_message(ER_CANT_CREATE_GEOMETRY_OBJECT,
              ER(ER_CANT_CREATE_GEOMETRY_OBJECT), MYF(0));
   return -1;
@@ -9032,7 +9032,7 @@ int Field_bit::store(const char *from, uint length, CHARSET_INFO *cs)
   {
     if (bit_len)
       clr_rec_bits(bit_ptr, bit_ofs, bit_len);
-    bzero(ptr, delta);
+    bzero((char *)ptr, delta);
     memcpy(ptr + delta, from, length);
   }
   else if (delta == 0)
@@ -9449,7 +9449,7 @@ int Field_bit_as_char::store(const char *from, uint length, CHARSET_INFO *cs)
       set_warning(MYSQL_ERROR::WARN_LEVEL_WARN, ER_WARN_DATA_OUT_OF_RANGE, 1);
     return 1;
   }
-  bzero(ptr, delta);
+  bzero((char *)ptr, delta);
   memcpy(ptr + delta, from, length);
   return 0;
 }
@@ -9530,7 +9530,7 @@ void Create_field::init_for_tmp_table(enum_field_types sql_type_arg,
   field_name= "";
   sql_type= sql_type_arg;
   char_length= length= length_arg;;
-  unireg_check= Field::NONE;
+  unireg_check= Field::NONE2;
   interval= 0;
   charset= &my_charset_bin;
   geom_type= Field::GEOM_GEOMETRY;
@@ -9581,7 +9581,7 @@ bool Create_field::init(THD *thd, char *fld_name, enum_field_types fld_type,
   def= fld_default_value;
   flags= fld_type_modifier;
   unireg_check= (fld_type_modifier & AUTO_INCREMENT_FLAG ?
-                 Field::NEXT_NUMBER : Field::NONE);
+                 Field::NEXT_NUMBER : Field::NONE2);
   decimals= fld_decimals ? (uint)atoi(fld_decimals) : 0;
   if (decimals >= NOT_FIXED_DEC)
   {
@@ -9808,7 +9808,7 @@ bool Create_field::init(THD *thd, char *fld_name, enum_field_types fld_type,
       }
       else
         unireg_check= (fld_on_update_value ? Field::TIMESTAMP_UN_FIELD:
-                                             Field::NONE);
+                                             Field::NONE2);
     }
     else
     {
@@ -9827,7 +9827,7 @@ bool Create_field::init(THD *thd, char *fld_name, enum_field_types fld_type,
       */
       unireg_check= (fld_on_update_value ? Field::TIMESTAMP_UN_FIELD :
                      (flags & NOT_NULL_FLAG ? Field::TIMESTAMP_OLD_FIELD :
-                                              Field::NONE));
+                                              Field::NONE2));
     }
     break;
   case MYSQL_TYPE_DATE:

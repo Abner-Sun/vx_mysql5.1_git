@@ -60,7 +60,7 @@ class TC_LOG_MMAP: public TC_LOG
   public:                // only to keep Sun Forte on sol9x86 happy
   typedef enum {
     POOL,                 // page is in pool
-    ERROR,                // last sync failed
+    ERROR_My,                // last sync failed
     DIRTY                 // new xids added since last sync
   } PAGE_STATE;
 

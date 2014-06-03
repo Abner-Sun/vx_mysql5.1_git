@@ -1168,7 +1168,7 @@ public:
       list.push_back(else_expr_arg);
     }
     set_arguments(list);
-    bzero(&cmp_items, sizeof(cmp_items));
+    bzero((char *)(&cmp_items), sizeof(cmp_items));
   }
   double val_real();
   longlong val_int();
@@ -1225,7 +1225,7 @@ public:
     :Item_func_opt_neg(list), array(0), have_null(0),
     arg_types_compatible(FALSE)
   {
-    bzero(&cmp_items, sizeof(cmp_items));
+    bzero((char *)(&cmp_items), sizeof(cmp_items));
     allowed_arg_cols= 0;  // Fetch this value from first argument
   }
   longlong val_int();

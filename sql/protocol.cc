@@ -1094,7 +1094,7 @@ bool Protocol_binary::prepare_for_send(List<Item> *item_list)
 void Protocol_binary::prepare_for_resend()
 {
   packet->length(bit_fields+1);
-  bzero((uchar*) packet->ptr(), 1+bit_fields);
+  bzero((char *)((uchar*) packet->ptr()), 1+bit_fields);
   field_pos=0;
 }
 

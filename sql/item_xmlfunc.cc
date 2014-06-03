@@ -578,7 +578,7 @@ String * Item_nodeset_func_union::val_nodeset(String *nodeset)
   String both_str;
   both_str.alloc(num_nodes);
   char *both= (char*) both_str.ptr();
-  bzero((void*)both, num_nodes);
+  bzero((char *)((void*)both), num_nodes);
   MY_XPATH_FLT *flt;
 
   fltbeg= (MY_XPATH_FLT*) s0->ptr();
@@ -665,7 +665,7 @@ String *Item_nodeset_func_ancestorbyname::val_nodeset(String *nodeset)
   prepare(nodeset);
   active_str.alloc(numnodes);
   active= (char*) active_str.ptr();
-  bzero((void*)active, numnodes);
+  bzero((char *)((void*)active), numnodes);
   uint pos= 0;
 
   for (MY_XPATH_FLT *flt= fltbeg; flt < fltend; flt++)
@@ -707,7 +707,7 @@ String *Item_nodeset_func_parentbyname::val_nodeset(String *nodeset)
   prepare(nodeset);
   active_str.alloc(numnodes);
   active= (char*) active_str.ptr();
-  bzero((void*)active, numnodes);
+  bzero((char *)((void*)active), numnodes);
   for (MY_XPATH_FLT *flt= fltbeg; flt < fltend; flt++)
   {
     uint j= nodebeg[flt->num].parent;
@@ -1331,7 +1331,7 @@ my_xpath_lex_init(MY_XPATH_LEX *lex,
 static void
 my_xpath_init(MY_XPATH *xpath)
 {
-  bzero((void*)xpath, sizeof(xpath[0]));
+  bzero((char *)((void*)xpath), sizeof(xpath[0]));
 }
 
 

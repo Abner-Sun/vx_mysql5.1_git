@@ -28,7 +28,8 @@ C_MODE_START
 
 #include <errno.h>
 #ifdef HAVE_SYS_SOCKET_H
-#include <sys/socket.h>
+//sfh add #include <sys/socket.h>
+#include <sockLib.h>
 #endif
 #ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>

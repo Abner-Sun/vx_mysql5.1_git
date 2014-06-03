@@ -53,6 +53,10 @@ struct record {
   uchar text[10];
 } record;
 
+pid_t fork( void)
+{
+    
+}
 
 int main(int argc,char **argv)
 {

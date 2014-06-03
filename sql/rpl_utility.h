@@ -66,7 +66,7 @@ public:
                                        &m_null_bits, (size + 7) / 8,
                                        NULL);
 
-    bzero(m_field_metadata, size * sizeof(uint16));
+    bzero((char *)m_field_metadata, size * sizeof(uint16));
 
     if (m_type)
       memcpy(m_type, types, size);

@@ -872,7 +872,7 @@ ha_federated::ha_federated(handlerton *hton,
   mysql(0), stored_result(0)
 {
   trx_next= 0;
-  bzero(&bulk_insert, sizeof(bulk_insert));
+  bzero((char *)(&bulk_insert), sizeof(bulk_insert));
 }
 
 

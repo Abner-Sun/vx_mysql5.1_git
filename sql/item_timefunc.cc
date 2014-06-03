@@ -885,7 +885,7 @@ static bool get_interval_info(const char *str,uint length,CHARSET_INFO *cs,
       /* Change values[0...i-1] -> values[0...count-1] */
       bmove_upp((uchar*) (values+count), (uchar*) (values+i),
 		sizeof(*values)*i);
-      bzero((uchar*) values, sizeof(*values)*(count-i));
+      bzero(((char *)(uchar*) values), sizeof(*values)*(count-i));
       break;
     }
   }
@@ -1519,7 +1519,7 @@ bool Item_func_from_days::get_date(MYSQL_TIME *ltime, uint fuzzy_date)
   longlong value=args[0]->val_int();
   if ((null_value=args[0]->null_value))
     return 1;
-  bzero(ltime, sizeof(MYSQL_TIME));
+  bzero((char *)ltime, sizeof(MYSQL_TIME));
   get_date_from_daynr((long) value, &ltime->year, &ltime->month, &ltime->day);
 
   if ((null_value= (fuzzy_date & TIME_NO_ZERO_DATE) &&

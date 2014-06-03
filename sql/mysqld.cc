@@ -98,7 +98,16 @@ extern "C" {					// Because of SCO 3.2V4.2
 #ifdef HAVE_GRP_H
 #include <grp.h>
 #endif
+
+//sfh add
+#if !defined(HAVE_SYS_SOCKET_H)
+#define HAVE_SYS_SOCKET_H
+#endif
+#include<hostLib.h>
+//sfh add end 
+
 #include <my_net.h>
+
 
 #if !defined(__WIN__)
 #  ifndef __NETWARE__
@@ -7763,7 +7772,7 @@ static int mysql_init_variables(void)
   prepared_stmt_count= 0;
   errmesg= 0;
   mysqld_unix_port= opt_mysql_tmpdir= my_bind_addr_str= NullS;
-  bzero((uchar*) &mysql_tmpdir_list, sizeof(mysql_tmpdir_list));
+  bzero((char *)((uchar*) &mysql_tmpdir_list), sizeof(mysql_tmpdir_list));
   bzero((char *) &global_status_var, sizeof(global_status_var));
   opt_large_pages= 0;
 #if defined(ENABLED_DEBUG_SYNC)
@@ -9165,7 +9174,7 @@ void refresh_status(THD *thd)
   add_to_status(&global_status_var, &thd->status_var);
 
   /* Reset thread's status variables */
-  bzero((uchar*) &thd->status_var, sizeof(thd->status_var));
+  bzero((char *)((uchar*) &thd->status_var), sizeof(thd->status_var));
 
   /* Reset some global variables */
   reset_status_vars();

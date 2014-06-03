@@ -569,7 +569,7 @@ retry:
   {
     switch (mode) {
     case RNEXT:
-      if (table->file->inited != handler::NONE)
+      if (table->file->inited != handler::NONE1)  //sfh add 
       {
         if (keyname)
         {
@@ -603,7 +603,7 @@ retry:
       DBUG_ASSERT(keyname != 0);
       /* Check if we read from the same index. */
       DBUG_ASSERT((uint) keyno == table->file->get_index());
-      if (table->file->inited != handler::NONE)
+      if (table->file->inited != handler::NONE1) //sfh add
       {
         error=table->file->index_prev(table->record[0]);
         break;

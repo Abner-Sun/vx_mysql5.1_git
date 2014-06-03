@@ -242,7 +242,7 @@
      IDENT_QUOTED = 458,
      IF = 459,
      IGNORE_SYM = 460,
-     IMPORT = 461,
+     IMPORT_My = 461,   //sfh add
      INDEXES = 462,
      INDEX_SYM = 463,
      INFILE = 464,
@@ -812,7 +812,7 @@
 #define IDENT_QUOTED 458
 #define IF 459
 #define IGNORE_SYM 460
-#define IMPORT 461
+#define IMPORT_My 461  //sfh add
 #define INDEXES 462
 #define INDEX_SYM 463
 #define INFILE 464
