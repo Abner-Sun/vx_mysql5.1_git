@@ -4779,7 +4779,46 @@ void tee_putc(int c, FILE *file)
 #define CLOCKS_PER_SEC (sysconf(_SC_CLK_TCK))
 #endif
 #endif
+//sfh add in May 30, 2014,15:55:19
+#include<stdlib.h>
+static void microtime(struct timeval *tv)
+{
+    struct timespec ts;
 
+    clock_gettime(0x1, &ts);   //sfh can make sure that clock_gettime function is included in stdlib.so <stdlib.h>
+    tv->tv_sec  = ts.tv_sec;
+    tv->tv_usec = ts.tv_nsec / 1000;
+}
+
+long times(struct tms *buf)
+{
+    struct timeval tv;
+    long  now;
+    static long start = 0;
+    
+    microtime(&tv);
+
+    if(start == 0)
+        start = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+
+    now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+
+    /* Fix for clock being set back in time. */
+    if(start > now)
+        start = now;
+    
+    /*!! NOTE: Nonsense values. */
+    if (buf != NULL)
+    {
+        buf->tms_utime  = now;
+        buf->tms_stime  = now;
+        buf->tms_cutime = now;
+        buf->tms_cstime = now;
+    }
+
+    return now - start;   /* milliseconds since system start. */
+}
+//sfh add end 
 static ulong start_timer(void)
 {
 #if defined(__WIN__) || defined(__NETWARE__)
