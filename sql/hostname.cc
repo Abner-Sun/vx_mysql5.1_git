@@ -41,6 +41,10 @@ extern "C" {					// Because of SCO 3.2V4.2
 }
 #endif
 
+//sfh add in Jun 05, 2014,14:19:32
+#include <wrapper/wrapperHostLib.h>
+//sfh add end
+
 
 class host_entry :public hash_filo_element
 {

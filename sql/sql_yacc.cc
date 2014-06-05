@@ -914,7 +914,7 @@ static bool add_create_index (LEX *lex, Key::Keytype type, const char *name,
      IDENT_QUOTED = 458,
      IF = 459,
      IGNORE_SYM = 460,
-     IMPORT = 461,
+     IMPORT_My1= 461,
      INDEXES = 462,
      INDEX_SYM = 463,
      INFILE = 464,
@@ -1484,7 +1484,7 @@ static bool add_create_index (LEX *lex, Key::Keytype type, const char *name,
 #define IDENT_QUOTED 458
 #define IF 459
 #define IGNORE_SYM 460
-#define IMPORT 461
+#define IMPORT_My1 461  //sfh add
 #define INDEXES 462
 #define INDEX_SYM 463
 #define INFILE 464

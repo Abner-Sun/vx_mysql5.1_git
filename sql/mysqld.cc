@@ -105,6 +105,52 @@ extern "C" {					// Because of SCO 3.2V4.2
 #endif
 //#include<hostLib.h>
 #include <wrapper/wrapperHostLib.h>
+#include<unistd.h>
+
+pid_t	geteuid(void)
+{
+	return(getpid());
+}
+
+pid_t	getuid(void)
+{
+	return(getpid());
+}
+
+int	setuid(uid_t uid)
+{
+	return(1);
+}
+
+int	setgid(gid_t uid)
+{
+	return(setuid(uid));
+}
+
+int setreuid(uid_t ruid,uid_t euid)
+{
+	
+}
+
+int setregid(uid_t ruid,uid_t euid)
+{
+
+}
+
+int chroot(const char * path)
+{
+	return(1);
+}
+
+mode_t umask (mode_t cmask)
+{
+  mode_t omask;
+  cmask &= 0777;
+  omask = my_umask;
+  my_umask = cmask;
+  return omask;
+}
+
 
 //sfh add end 
 

@@ -1499,7 +1499,7 @@ static bool get_unsigned(THD *thd, set_var *var, ulonglong user_max,
 
   if (!limits && var_type != GET_ULL)
   {
-    bzero(&fallback, sizeof(fallback));
+    bzero((char *)(&fallback), sizeof(fallback));
     fallback.var_type= var_type;
     limits= &fallback;
   }
@@ -2478,6 +2478,7 @@ void sys_var_log_state::set_default(THD *thd, enum_var_type type)
   pthread_mutex_unlock(&LOCK_global_system_variables);
 }
 
+#define S_IWRITE	00200   //sfh add
 
 static int  sys_check_log_path(THD *thd,  set_var *var)
 {
@@ -2491,7 +2492,7 @@ static int  sys_check_log_path(THD *thd,  set_var *var)
     goto err;
 
   log_file_str= res->c_ptr();
-  bzero(&f_stat, sizeof(MY_STAT));
+  bzero((char *)(&f_stat), sizeof(MY_STAT));
 
   path_length= unpack_filename(path, log_file_str);
 
@@ -3369,7 +3370,7 @@ SHOW_VAR* enumerate_sys_vars(THD *thd, bool sorted)
                (qsort_cmp) show_cmp);
     
     /* make last element empty */
-    bzero(show, sizeof(SHOW_VAR));
+    bzero((char *)show, sizeof(SHOW_VAR));
   }
   return result;
 }
