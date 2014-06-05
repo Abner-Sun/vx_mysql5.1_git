@@ -103,7 +103,9 @@ extern "C" {					// Because of SCO 3.2V4.2
 #if !defined(HAVE_SYS_SOCKET_H)
 #define HAVE_SYS_SOCKET_H
 #endif
-#include<hostLib.h>
+//#include<hostLib.h>
+#include <wrapper/wrapperHostLib.h>
+
 //sfh add end 
 
 #include <my_net.h>
