@@ -1205,7 +1205,7 @@ int plugin_init(int *argc, char **argv, int flags)
           !my_strnncoll(&my_charset_latin1, (const uchar*) plugin->name,
                         6, (const uchar*) "InnoDB", 6))
         continue;
-      bzero(&tmp, sizeof(tmp));
+      bzero((char *)(&tmp), sizeof(tmp));
       tmp.plugin= plugin;
       tmp.name.str= (char *)plugin->name;
       tmp.name.length= strlen(plugin->name);
@@ -1403,7 +1403,7 @@ static void plugin_load(MEM_ROOT *tmp_root, int *argc, char **argv)
   lex_start(new_thd);
   new_thd->db= my_strdup("mysql", MYF(0));
   new_thd->db_length= 5;
-  bzero((uchar*)&tables, sizeof(tables));
+  bzero((char *)((uchar*)&tables), sizeof(tables));
   tables.alias= tables.table_name= (char*)"plugin";
   tables.lock_type= TL_READ;
   tables.db= new_thd->db;
@@ -1700,7 +1700,7 @@ bool mysql_install_plugin(THD *thd, const LEX_STRING *name, const LEX_STRING *dl
     DBUG_RETURN(TRUE);
   }
 
-  bzero(&tables, sizeof(tables));
+  bzero((char *)(&tables), sizeof(tables));
   tables.db= (char *)"mysql";
   tables.table_name= tables.alias= (char *)"plugin";
   if (check_table_access(thd, INSERT_ACL, &tables, 1, FALSE))
@@ -1782,7 +1782,7 @@ bool mysql_uninstall_plugin(THD *thd, const LEX_STRING *name)
     DBUG_RETURN(TRUE);
   }
 
-  bzero(&tables, sizeof(tables));
+  bzero((char *)(&tables), sizeof(tables));
   tables.db= (char *)"mysql";
   tables.table_name= tables.alias= (char *)"plugin";
   if (check_table_access(thd, DELETE_ACL, &tables, 1, FALSE))
@@ -3253,7 +3253,7 @@ static my_option *construct_help_options(MEM_ROOT *mem_root,
   if (!(opts= (my_option*) alloc_root(mem_root, sizeof(my_option) * count)))
     DBUG_RETURN(NULL);
 
-  bzero(opts, sizeof(my_option) * count);
+  bzero((char *)opts, sizeof(my_option) * count);
 
   if (construct_options(mem_root, p, opts))
     DBUG_RETURN(NULL);
@@ -3321,7 +3321,7 @@ static int test_plugin_options(MEM_ROOT *tmp_root, struct st_plugin_int *tmp,
       sql_print_error("Out of memory for plugin '%s'.", tmp->name.str);
       DBUG_RETURN(-1);
     }
-    bzero(opts, sizeof(my_option) * count);
+    bzero((char *)opts, sizeof(my_option) * count);
 
     if (construct_options(tmp_root, tmp, opts))
     {

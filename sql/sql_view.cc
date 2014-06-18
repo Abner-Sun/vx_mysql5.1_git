@@ -1296,7 +1296,7 @@ bool mysql_make_view(THD *thd, File_parser *parser, TABLE_LIST *table,
       */
         
       TABLE_LIST view_no_suid;
-      bzero(static_cast<void *>(&view_no_suid), sizeof(TABLE_LIST));
+      bzero((char *)(static_cast<void *>(&view_no_suid)), sizeof(TABLE_LIST));
       view_no_suid.db= table->db;
       view_no_suid.table_name= table->table_name;
 
@@ -2032,7 +2032,7 @@ mysql_rename_view(THD *thd,
       view definition parsing or use temporary 'view_def'
       object for it.
     */
-    bzero(&view_def, sizeof(view_def));
+    bzero((char *)(&view_def), sizeof(view_def));
     view_def.timestamp.str= view_def.timestamp_buffer;
     view_def.view_suid= TRUE;
 

@@ -745,7 +745,7 @@ bool get_next_time(const Time_zone *time_zone, my_time_t *next,
   }
 
   INTERVAL interval;
-  bzero(&interval, sizeof(interval));
+  bzero((char *)(&interval), sizeof(interval));
   my_time_t next_time= 0;
 
   if (seconds)

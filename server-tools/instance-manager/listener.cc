@@ -207,7 +207,7 @@ int Listener::create_tcp_socket()
   }
 
   struct sockaddr_in ip_socket_address;
-  bzero(&ip_socket_address, sizeof(ip_socket_address));
+  bzero((char *)(&ip_socket_address), sizeof(ip_socket_address));
 
   ulong im_bind_addr;
   if (Options::Main::bind_address != 0)
@@ -259,6 +259,17 @@ int Listener::create_tcp_socket()
   return 0;
 }
 
+//sfh add 
+int		NEAR my_umask=0664;
+mode_t umask (mode_t cmask)
+{
+  mode_t omask;
+  cmask &= 0777;
+  omask = my_umask;
+  my_umask = cmask;
+  return omask;
+}
+//sfh add end 
 #ifndef __WIN__
 int Listener::
 create_unix_socket(struct sockaddr_un &unix_socket_address)
@@ -271,7 +282,7 @@ create_unix_socket(struct sockaddr_un &unix_socket_address)
     return -1;
   }
 
-  bzero(&unix_socket_address, sizeof(unix_socket_address));
+  bzero((char *)(&unix_socket_address), sizeof(unix_socket_address));
 
   unix_socket_address.sun_family= AF_UNIX;
   strmake(unix_socket_address.sun_path, Options::Main::socket_file_name,

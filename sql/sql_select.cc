@@ -10379,11 +10379,11 @@ create_tmp_table(THD *thd,TMP_TABLE_PARAM *param,List<Item> &fields,
   pos=table->record[0]+ null_pack_length;
   if (null_pack_length)
   {
-    bzero((uchar*) recinfo,sizeof(*recinfo));
+    bzero((char *)((uchar*) recinfo),sizeof(*recinfo));//sfh add
     recinfo->type=FIELD_NORMAL;
     recinfo->length=null_pack_length;
     recinfo++;
-    bfill(null_flags,null_pack_length,255);	// Set null fields
+    bfill((char *)null_flags,null_pack_length,255);	// Set null fields   //sfh add
 
     table->null_flags= (uchar*) table->record[0];
     share->null_fields= null_count+ hidden_null_count;
@@ -10395,7 +10395,7 @@ create_tmp_table(THD *thd,TMP_TABLE_PARAM *param,List<Item> &fields,
   {
     Field *field= *reg_field;
     uint length;
-    bzero((uchar*) recinfo,sizeof(*recinfo));
+    bzero((char *)((uchar*) recinfo),sizeof(*recinfo)); //sfh add
 
     if (!(field->flags & NOT_NULL_FLAG))
     {
@@ -10409,7 +10409,7 @@ create_tmp_table(THD *thd,TMP_TABLE_PARAM *param,List<Item> &fields,
 	recinfo->length=1;
 	recinfo->type=FIELD_NORMAL;
 	recinfo++;
-	bzero((uchar*) recinfo,sizeof(*recinfo));
+	bzero((char *)((uchar*) recinfo),sizeof(*recinfo));
       }
       else
       {
@@ -10592,7 +10592,7 @@ create_tmp_table(THD *thd,TMP_TABLE_PARAM *param,List<Item> &fields,
           alloc_root(&table->mem_root,
                      keyinfo->key_parts * sizeof(KEY_PART_INFO))))
       goto err;
-    bzero((void*) key_part_info, keyinfo->key_parts * sizeof(KEY_PART_INFO));
+    bzero((char *)((void*) key_part_info), keyinfo->key_parts * sizeof(KEY_PART_INFO));  //sfh add
     table->key_info=keyinfo;
     keyinfo->key_part=key_part_info;
     keyinfo->flags=HA_NOSAME | HA_NULL_ARE_EQUAL;
@@ -10609,8 +10609,8 @@ create_tmp_table(THD *thd,TMP_TABLE_PARAM *param,List<Item> &fields,
                                              (uint32) key_part_info->length,
                                              (uchar*) 0,
                                              (uint) 0,
-                                             Field::NONE,
-                                             NullS, &my_charset_bin);
+                                             Field::NONE2,
+                                             NullS, &my_charset_bin);  //sfh add
       if (!key_part_info->field)
         goto err;
       key_part_info->field->init(table);
@@ -10648,7 +10648,13 @@ create_tmp_table(THD *thd,TMP_TABLE_PARAM *param,List<Item> &fields,
     goto err;
 
   // Make empty record so random data is not written to disk
-  empty_record(table);
+//sfh add
+#define empty_record1(A) { \
+							restore_record((A),s->default_values); \
+							bfill((char *)((A)->null_flags),(A)->s->null_bytes,255);\
+						  }
+
+  empty_record1(table);
 
   thd->mem_root= mem_root_save;
 
@@ -10707,8 +10713,8 @@ TABLE *create_virtual_tmp_table(THD *thd, List<Create_field> &field_list)
                         NullS))
     return 0;
 
-  bzero(table, sizeof(*table));
-  bzero(share, sizeof(*share));
+  bzero((char *)table, sizeof(*table));
+  bzero((char *)share, sizeof(*share));
   table->field= field;
   table->s= share;
   share->blob_field= blob_field;
@@ -10824,7 +10830,7 @@ static bool create_myisam_tmp_table(TABLE *table,TMP_TABLE_PARAM *param,
     if (!seg)
       goto err;
 
-    bzero(seg, sizeof(*seg) * keyinfo->key_parts);
+    bzero((char *)seg, sizeof(*seg) * keyinfo->key_parts);
     if (keyinfo->key_length >= table->file->max_key_length() ||
 	keyinfo->key_parts > table->file->max_key_parts() ||
 	share->uniques)
@@ -10839,7 +10845,7 @@ static bool create_myisam_tmp_table(TABLE *table,TMP_TABLE_PARAM *param,
       uniquedef.null_are_equal=1;
 
       /* Create extra column for hash value */
-      bzero((uchar*) param->recinfo,sizeof(*param->recinfo));
+      bzero((char *)((uchar*) param->recinfo),sizeof(*param->recinfo));
       param->recinfo->type= FIELD_CHECK;
       param->recinfo->length=MI_UNIQUE_HASH_LENGTH;
       param->recinfo++;
@@ -11182,7 +11188,7 @@ do_select(JOIN *join,List<Item> *fields,TABLE *table,Procedure *procedure)
   if (table)
   {
     VOID(table->file->extra(HA_EXTRA_WRITE_CACHE));
-    empty_record(table);
+    empty_record1(table);  //sfh add
     if (table->group && join->tmp_table_param.sum_func_count &&
         table->s->keys && !table->file->inited)
       table->file->ha_index_init(0, 0);
@@ -11910,7 +11916,7 @@ join_read_system(JOIN_TAB *tab)
       if (error != HA_ERR_END_OF_FILE)
 	return report_error(table, error);
       mark_as_null_row(tab->table);
-      empty_record(table);			// Make empty record
+      empty_record1(table);			// Make empty record  //sfh add
       return -1;
     }
     store_record(table,record[1]);
@@ -11956,7 +11962,7 @@ join_read_const(JOIN_TAB *tab)
     {
       table->status= STATUS_NOT_FOUND;
       mark_as_null_row(tab->table);
-      empty_record(table);
+      empty_record1(table); //sfh add
       if (error != HA_ERR_KEY_NOT_FOUND && error != HA_ERR_END_OF_FILE)
 	return report_error(table, error);
       return -1;

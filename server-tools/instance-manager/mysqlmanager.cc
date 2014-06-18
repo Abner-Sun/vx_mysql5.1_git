@@ -69,6 +69,45 @@ static struct passwd *check_user();
 static bool switch_user();
 #endif
 
+//sfh add 
+static mode_t umask (mode_t cmask)
+{
+  mode_t omask;
+  cmask &= 0777;
+  omask = my_umask;
+  my_umask = cmask;
+  return omask;
+}
+
+static pid_t	geteuid(void)
+{
+	return(-1);
+}
+
+static int	setuid(uid_t uid)
+{
+	return(1);
+}
+
+static int	setgid(gid_t uid)
+{
+	return(setuid(uid));
+}
+
+struct passwd *getpwnam(const char *name)
+{
+   struct passwd *result;
+   	return(result);
+}
+
+struct passwd *getpwuid(uid_t uid)
+{
+	struct passwd *result;
+	   return(result);
+
+}
+
+//sfh add end
 
 /************************************************************************/
 /**

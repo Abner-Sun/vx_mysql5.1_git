@@ -639,7 +639,7 @@ bool mysqld_help(THD *thd, const char *mask)
   MEM_ROOT *mem_root= thd->mem_root;
   DBUG_ENTER("mysqld_help");
 
-  bzero((uchar*)tables,sizeof(tables));
+  bzero((char *)((uchar*)tables),sizeof(tables));
   tables[0].alias= tables[0].table_name= (char*) "help_topic";
   tables[0].lock_type= TL_READ;
   tables[0].next_global= tables[0].next_local= 

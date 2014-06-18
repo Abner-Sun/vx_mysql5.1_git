@@ -2545,9 +2545,9 @@ int prepare_create_field(Create_field *sql_field,
         (*timestamps_with_niladic)++;
       }
       else
-        sql_field->unireg_check= Field::NONE;
+        sql_field->unireg_check= Field::NONE2;
     }
-    else if (sql_field->unireg_check != Field::NONE)
+    else if (sql_field->unireg_check != Field::NONE2)
       (*timestamps_with_niladic)++;
 
     (*timestamps)++;
@@ -3443,7 +3443,7 @@ mysql_prepare_create_table(THD *thd, HA_CREATE_INFO *create_info,
         !sql_field->def &&
         sql_field->sql_type == MYSQL_TYPE_TIMESTAMP &&
         (sql_field->flags & NOT_NULL_FLAG) &&
-        (type == Field::NONE || type == Field::TIMESTAMP_UN_FIELD))
+        (type == Field::NONE2|| type == Field::TIMESTAMP_UN_FIELD))
     {
       /*
         An error should be reported if:
@@ -7312,7 +7312,7 @@ view_err:
     if (table->s->tmp_table)
     {
       TABLE_LIST tbl;
-      bzero((void*) &tbl, sizeof(tbl));
+      bzero((char *)((void*) &tbl), sizeof(tbl));
       tbl.db= new_db;
       tbl.table_name= tbl.alias= tmp_name;
       /* Table is in thd->temporary_tables */

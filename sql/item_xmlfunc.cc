@@ -1080,6 +1080,35 @@ static struct my_xpath_keyword_names_st my_nodetype_names[]=
   {0,NULL,0,0}
 };
 
+//sfh add
+#include<ctype.h>
+int strncasecmp
+    (
+    const char * s1,   /* string to compare */
+    const char * s2,   /* string to compare <s1> to */
+    size_t n           /* man no. of characters to compare */
+    )
+    {
+    int c = 0;
+
+    /*
+     * We could break out of the loop in one of three cases:
+     * (a) when n <= 0
+     * (b) when there is differences in the char being compares
+     * (c) when there are no characters left in one of the strings
+     *
+     * In case (a), we return the difference (c) computed for the previous
+     *              character that was seen.
+     * In case (b) or (c), we return the difference computed for the
+     *             current character.
+     */
+    for (; 
+         n > 0 && (c = tolower(*s1) - tolower(*s2)) == 0 && *s1 && *s2; 
+	 ++s1, ++s2, --n);
+    return (c);
+    }
+//sfh add end 
+
 
 /*
   Lookup a keyword

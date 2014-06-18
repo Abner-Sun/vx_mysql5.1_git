@@ -202,6 +202,16 @@ private:
   FILE *m_stdout;
 };
 
+//sfh add 
+static FILE *popen(const char *str,char *mode)
+{
+      FILE *str1;
+	  return(str1);
+}
+
+
+
+//sfh add end 
 bool Mysqld_output_parser_unix::run_command(const char *command)
 {
   if (!(m_stdout= popen(command, "r")))
@@ -227,10 +237,19 @@ bool Mysqld_output_parser_unix::read_line(char *line_buffer,
   return (retbuff == NULL);
 }
 
+//sfh add 
+int pclose1(FILE *)
+{
+      FILE *str1;
+	  return(-1);
+}
+
+//sfh add end 
+
 bool Mysqld_output_parser_unix::cleanup()
 {
   if (m_stdout)
-    pclose(m_stdout);
+    pclose1(m_stdout);//sfh add 
 
   return FALSE;
 }

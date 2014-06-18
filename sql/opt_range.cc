@@ -410,7 +410,7 @@ public:
       if (maybe_null && *min_value)
       {
 	**min_key=1;
-	bzero(*min_key+1,length-1);
+	bzero((char *)(*min_key+1),length-1);
       }
       else
 	memcpy(*min_key,min_value,length);
@@ -428,7 +428,7 @@ public:
       if (maybe_null && *max_value)
       {
 	**max_key=1;
-	bzero(*max_key+1,length-1);
+	bzero((char *)(*max_key+1),length-1);
       }
       else
 	memcpy(*max_key,max_value,length);
@@ -1149,7 +1149,7 @@ int QUICK_RANGE_SELECT::init()
 {
   DBUG_ENTER("QUICK_RANGE_SELECT::init");
 
-  if (file->inited != handler::NONE)
+  if (file->inited != handler::NONE1)
     file->ha_index_or_rnd_end();
   DBUG_RETURN(FALSE);
 }
@@ -1157,7 +1157,7 @@ int QUICK_RANGE_SELECT::init()
 
 void QUICK_RANGE_SELECT::range_end()
 {
-  if (file->inited != handler::NONE)
+  if (file->inited != handler::NONE1)
     file->ha_index_or_rnd_end();
 }
 
@@ -1199,7 +1199,7 @@ QUICK_INDEX_MERGE_SELECT::QUICK_INDEX_MERGE_SELECT(THD *thd_param,
   DBUG_ENTER("QUICK_INDEX_MERGE_SELECT::QUICK_INDEX_MERGE_SELECT");
   index= MAX_KEY;
   head= table;
-  bzero(&read_record, sizeof(read_record));
+  bzero((char *)(&read_record), sizeof(read_record));
   init_sql_alloc(&alloc, thd->variables.range_alloc_block_size, 0);
   DBUG_VOID_RETURN;
 }
@@ -1263,7 +1263,7 @@ QUICK_ROR_INTERSECT_SELECT::QUICK_ROR_INTERSECT_SELECT(THD *thd_param,
   if (!parent_alloc)
     init_sql_alloc(&alloc, thd->variables.range_alloc_block_size, 0);
   else
-    bzero(&alloc, sizeof(MEM_ROOT));
+    bzero((char *)(&alloc), sizeof(MEM_ROOT)); //sfh add 
   last_rowid= (uchar*) alloc_root(parent_alloc? parent_alloc : &alloc,
                                   head->file->ref_length);
 }
@@ -1487,7 +1487,7 @@ QUICK_ROR_INTERSECT_SELECT::~QUICK_ROR_INTERSECT_SELECT()
   quick_selects.delete_elements();
   delete cpk_quick;
   free_root(&alloc,MYF(0));
-  if (need_to_fetch_row && head->file->inited != handler::NONE)
+  if (need_to_fetch_row && head->file->inited != handler::NONE1)
     head->file->ha_rnd_end();
   DBUG_VOID_RETURN;
 }
@@ -1523,7 +1523,7 @@ int QUICK_ROR_UNION_SELECT::init()
                  FALSE , QUICK_ROR_UNION_SELECT::queue_cmp,
                  (void*) this))
   {
-    bzero(&queue, sizeof(QUEUE));
+    bzero((char *)(&queue), sizeof(QUEUE));
     DBUG_RETURN(1);
   }
 
@@ -1620,7 +1620,7 @@ QUICK_ROR_UNION_SELECT::~QUICK_ROR_UNION_SELECT()
   DBUG_ENTER("QUICK_ROR_UNION_SELECT::~QUICK_ROR_UNION_SELECT");
   delete_queue(&queue);
   quick_selects.delete_elements();
-  if (head->file->inited != handler::NONE)
+  if (head->file->inited != handler::NONE1)
     head->file->ha_rnd_end();
   free_root(&alloc,MYF(0));
   DBUG_VOID_RETURN;
@@ -8203,7 +8203,7 @@ int QUICK_INDEX_MERGE_SELECT::read_keys_and_merge()
       if (!cur_quick)
         break;
 
-      if (cur_quick->file->inited != handler::NONE) 
+      if (cur_quick->file->inited != handler::NONE1) 
         cur_quick->file->ha_index_end();
       if (cur_quick->init() || cur_quick->reset())
         DBUG_RETURN(1);
@@ -8451,7 +8451,7 @@ int QUICK_RANGE_SELECT::reset()
   in_range= FALSE;
   cur_range= (QUICK_RANGE**) ranges.buffer;
 
-  if (file->inited == handler::NONE)
+  if (file->inited == handler::NONE1)
   {
     if (in_ror_merged_scan)
       head->column_bitmaps_set_no_signal(&column_bitmap, &column_bitmap);
@@ -9795,7 +9795,7 @@ check_group_min_max_predicates(COND *cond, Item_field *min_max_arg_item,
 
         /* Check that pred compares min_max_arg_item with a constant. */
         Item *args[3];
-        bzero(args, 3 * sizeof(Item*));
+        bzero((char *)args, 3 * sizeof(Item*));
         bool inv;
         /* Test if this is a comparison of a field and a constant. */
         if (!simple_pred(pred, args, &inv))
@@ -9995,7 +9995,7 @@ get_constant_key_infix(KEY *index_info, SEL_ARG *index_range_tree,
       */
       DBUG_ASSERT (field_length > 0);
       *key_ptr= 1;
-      bzero(key_ptr+1,field_length-1);
+      bzero((char *)(key_ptr+1),field_length-1);
       key_ptr+= field_length;
       *key_infix_len+= field_length;
     }
@@ -10385,7 +10385,7 @@ QUICK_GROUP_MIN_MAX_SELECT(TABLE *table, JOIN *join_arg, bool have_min_arg,
     join->thd->mem_root= &alloc;
   }
   else
-    bzero(&alloc, sizeof(MEM_ROOT));            // ensure that it's not used
+    bzero((char *)(&alloc), sizeof(MEM_ROOT));            // ensure that it's not used
 }
 
 
@@ -10486,7 +10486,7 @@ int QUICK_GROUP_MIN_MAX_SELECT::init()
 QUICK_GROUP_MIN_MAX_SELECT::~QUICK_GROUP_MIN_MAX_SELECT()
 {
   DBUG_ENTER("QUICK_GROUP_MIN_MAX_SELECT::~QUICK_GROUP_MIN_MAX_SELECT");
-  if (file->inited != handler::NONE) 
+  if (file->inited != handler::NONE1) 
     file->ha_index_end();
   if (min_max_arg_part)
     delete_dynamic(&min_max_ranges);

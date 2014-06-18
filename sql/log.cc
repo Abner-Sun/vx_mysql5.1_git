@@ -383,7 +383,7 @@ bool Log_to_csv_event_handler::
   save_thd_options= thd->options;
   thd->options&= ~OPTION_BIN_LOG;
 
-  bzero(& table_list, sizeof(TABLE_LIST));
+  bzero((char *)(& table_list), sizeof(TABLE_LIST)); //sfh add
   table_list.alias= table_list.table_name= GENERAL_LOG_NAME.str;
   table_list.table_name_length= GENERAL_LOG_NAME.length;
 
@@ -548,7 +548,7 @@ bool Log_to_csv_event_handler::
   */
   save_time_zone_used= thd->time_zone_used;
 
-  bzero(& table_list, sizeof(TABLE_LIST));
+  bzero((char *)(& table_list), sizeof(TABLE_LIST));  //sfh add 
   table_list.alias= table_list.table_name= SLOW_LOG_NAME.str;
   table_list.table_name_length= SLOW_LOG_NAME.length;
 
@@ -698,7 +698,7 @@ int Log_to_csv_event_handler::
 
   DBUG_ENTER("Log_to_csv_event_handler::activate_log");
 
-  bzero(& table_list, sizeof(TABLE_LIST));
+  bzero((char *)(& table_list), sizeof(TABLE_LIST));  //sfh add 
 
   if (log_table_type == QUERY_LOG_GENERAL)
   {
@@ -5729,7 +5729,7 @@ int TC_LOG_MMAP::sync()
   pool_last->next=syncing;
   pool_last=syncing;
   syncing->next=0;
-  syncing->state= err ? ERROR : POOL;
+  syncing->state= (err ? ERROR_My: POOL);  //sfh add
   pthread_cond_broadcast(&syncing->cond);    // signal "sync done"
   pthread_cond_signal(&COND_pool);           // in case somebody's waiting
   pthread_mutex_unlock(&LOCK_pool);
@@ -5838,7 +5838,7 @@ int TC_LOG_MMAP::recover()
     goto err2;
 
   hash_free(&xids);
-  bzero(data, (size_t)file_length);
+  bzero((char *)data, (size_t)file_length);
   return 0;
 
 err2:

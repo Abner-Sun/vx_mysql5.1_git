@@ -1,3 +1,4 @@
+//sfh add in
 /* Copyright (c) 2003-2007 MySQL AB
 
    This program is free software; you can redistribute it and/or modify
@@ -77,6 +78,12 @@ static bool open_log_file()
   return FALSE;
 }
 
+
+//sfh add 
+static pid_t setsid(void)
+{
+	return(-1);
+}
 
 /************************************************************************/
 /**
@@ -205,6 +212,16 @@ void terminate(int signo)
   shutdown_request_signo= signo;
 }
 
+
+
+//sfh add in Jun 09, 2014,10:11:9
+static pid_t fork( void)
+{
+    
+}
+
+
+//sfh add end
 
 /************************************************************************/
 /**

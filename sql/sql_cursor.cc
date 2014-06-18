@@ -276,7 +276,7 @@ Sensitive_cursor::Sensitive_cursor(THD *thd, select_result *result_arg)
   /* We will overwrite it at open anyway. */
   init_sql_alloc(&main_mem_root, ALLOC_ROOT_MIN_BLOCK_SIZE, 0);
   thr_lock_owner_init(&lock_id, &thd->lock_info);
-  bzero((void*) ht_info, sizeof(ht_info));
+  bzero((char *)((void*) ht_info), sizeof(ht_info));
 }
 
 

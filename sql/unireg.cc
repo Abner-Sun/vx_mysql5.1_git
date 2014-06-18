@@ -299,7 +299,7 @@ bool mysql_create_frm(THD *thd, const char *file_name,
   else
 #endif
   {
-    bzero((uchar*) buff, 6);
+    bzero((char *)((uchar*) buff), 6); //sfh add
     if (my_write(file, (uchar*) buff, 6, MYF_RW))
       goto err;
   }
@@ -648,8 +648,8 @@ static bool pack_header(uchar *forminfo, enum legacy_db_type table_type,
       as auto-update field.
     */
     if (field->sql_type == MYSQL_TYPE_TIMESTAMP &&
-        MTYP_TYPENR(field->unireg_check) != Field::NONE &&
-	!time_stamp_pos)
+        MTYP_TYPENR(field->unireg_check) != Field::NONE2&&
+	!time_stamp_pos) //sfh add
       time_stamp_pos= (uint) field->offset+ (uint) data_offset + 1;
     length=field->pack_length;
     /* Ensure we don't have any bugs when generating offsets */
@@ -859,7 +859,7 @@ static bool pack_fields(File file, List<Create_field> &create_fields,
         uint           i;
         unsigned char *val= NULL;
 
-        bzero(occ, sizeof(occ));
+        bzero((char *)occ, sizeof(occ)); //sfh add
 
         for (i=0; (val= (unsigned char*) field->interval->type_names[i]); i++)
           for (uint j = 0; j < field->interval->type_lengths[i]; j++)

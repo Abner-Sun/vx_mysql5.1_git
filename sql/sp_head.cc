@@ -839,7 +839,7 @@ sp_head::create_result_field(uint field_max_length, const char *field_name,
                       m_return_field_def.sql_type,
                       m_return_field_def.charset,
                       m_return_field_def.geom_type,
-                      Field::NONE,                  /* unreg check */
+                      Field::NONE2,                  /* unreg check */
                       m_return_field_def.interval,
                       field_name ? field_name : (const char *) m_name.str);
 

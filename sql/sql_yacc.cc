@@ -914,7 +914,7 @@ static bool add_create_index (LEX *lex, Key::Keytype type, const char *name,
      IDENT_QUOTED = 458,
      IF = 459,
      IGNORE_SYM = 460,
-     IMPORT_My1= 461,
+     IMPORT_My2= 461,  //sfh add
      INDEXES = 462,
      INDEX_SYM = 463,
      INFILE = 464,
@@ -1484,7 +1484,7 @@ static bool add_create_index (LEX *lex, Key::Keytype type, const char *name,
 #define IDENT_QUOTED 458
 #define IF 459
 #define IGNORE_SYM 460
-#define IMPORT_My1 461  //sfh add
+#define IMPORT_My2 461
 #define INDEXES 462
 #define INDEX_SYM 463
 #define INFILE 464
@@ -29433,7 +29433,7 @@ yyreduce:
             LEX_USER *curr_user;
             if (!(curr_user= (LEX_USER*) lex->thd->alloc(sizeof(st_lex_user))))
               MYSQL_YYABORT;
-            bzero(curr_user, sizeof(st_lex_user));
+            bzero((char*)curr_user, sizeof(st_lex_user)); //sfh add
             lex->grant_user= curr_user;
           }
     break;
@@ -31355,7 +31355,7 @@ yyreduce:
               will be handled in the  get_current_user() function
               later
             */
-            bzero((yyval.lex_user), sizeof(LEX_USER));
+            bzero((char *)(yyval.lex_user), sizeof(LEX_USER));  //sfh add 
           }
     break;
 

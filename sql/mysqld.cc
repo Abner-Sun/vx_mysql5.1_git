@@ -109,12 +109,12 @@ extern "C" {					// Because of SCO 3.2V4.2
 
 pid_t	geteuid(void)
 {
-	return(getpid());
+	return(-1);
 }
 
 pid_t	getuid(void)
 {
-	return(getpid());
+	return(-1);
 }
 
 int	setuid(uid_t uid)
@@ -151,6 +151,18 @@ mode_t umask (mode_t cmask)
   return omask;
 }
 
+struct passwd *getpwnam(const char *name)
+{
+   struct passwd *result;
+   	return(result);
+}
+
+struct passwd *getpwuid(uid_t uid)
+{
+	struct passwd *result;
+	   return(result);
+
+}
 
 //sfh add end 
 

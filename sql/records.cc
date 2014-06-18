@@ -54,10 +54,16 @@ static int rr_index(READ_RECORD *info);
   @param idx          index to scan
 */
 
+//sfh add 
+#define empty_record2(A) { \
+							  restore_record((A),s->default_values); \
+							  bfill((char *)(A)->null_flags,(A)->s->null_bytes,255);\
+							} 
+
 void init_read_record_idx(READ_RECORD *info, THD *thd, TABLE *table,
                           bool print_error, uint idx)
 {
-  empty_record(table);
+  empty_record2(table);
   bzero((char*) info,sizeof(*info));
   info->thd= thd;
   info->table= table;
@@ -184,7 +190,7 @@ void init_read_record(READ_RECORD *info,THD *thd, TABLE *table,
   }
   else
   {
-    empty_record(table);
+    empty_record2(table);
     info->record= table->record[0];
     info->ref_length= table->file->ref_length;
   }

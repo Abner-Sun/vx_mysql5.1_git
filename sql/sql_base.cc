@@ -1045,7 +1045,7 @@ bool close_cached_connection_tables(THD *thd, bool if_wait_for_refresh,
   DBUG_ENTER("close_cached_connections");
   DBUG_ASSERT(thd);
 
-  bzero(&tmp, sizeof(TABLE_LIST));
+  bzero((char *)(&tmp), sizeof(TABLE_LIST));
 
   if (!have_lock)
     VOID(pthread_mutex_lock(&LOCK_open));
@@ -6521,9 +6521,9 @@ find_field_in_tables(THD *thd, Item_ident *item,
                                            &actual_table);
         if (cur_field)
         {
-          Field *nf=new Field_null(NULL,0,Field::NONE,
+          Field *nf=new Field_null(NULL,0,Field::NONE2,
                                    cur_field->field_name,
-                                   &my_charset_bin);
+                                   &my_charset_bin); //sfh add 
           nf->init(cur_table->table);
           cur_field= nf;
         }
@@ -7652,7 +7652,7 @@ bool setup_fields(THD *thd, Item **ref_pointer_array,
     ref_pointer_array
   */
   if (ref_pointer_array)
-    bzero(ref_pointer_array, sizeof(Item *) * fields.elements);
+    bzero((char *)ref_pointer_array, sizeof(Item *) * fields.elements);
 
   /*
     We call set_entry() there (before fix_fields() of the whole list of field
@@ -8873,7 +8873,7 @@ open_new_frm(THD *thd, TABLE_SHARE *share, const char *alias,
   }
  
 err:
-  bzero(outparam, sizeof(TABLE));	// do not run repair
+  bzero((char *)outparam, sizeof(TABLE));	// do not run repair
   DBUG_RETURN(1);
 }
 

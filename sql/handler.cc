@@ -3689,7 +3689,7 @@ int ha_create_table_from_engine(THD* thd, const char *db, const char *name)
   DBUG_ENTER("ha_create_table_from_engine");
   DBUG_PRINT("enter", ("name '%s'.'%s'", db, name));
 
-  bzero((uchar*) &create_info,sizeof(create_info));
+  bzero((char *)((uchar*) &create_info),sizeof(create_info)); //sfh add
   if ((error= ha_discover(thd, db, name, &frmblob, &frmlen)))
   {
     /* Table could not be discovered and thus not created */

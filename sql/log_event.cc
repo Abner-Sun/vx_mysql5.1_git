@@ -8320,7 +8320,7 @@ Table_map_log_event::Table_map_log_event(THD *thd, TABLE *tbl, ulong tid,
                                  &m_field_metadata, (m_colcnt * 2),
                                  NULL);
 
-  bzero(m_field_metadata, (m_colcnt * 2));
+  bzero((char *)m_field_metadata, (m_colcnt * 2));//sfh add
 
   /*
     Create an array for the field metadata and store it.
@@ -8338,7 +8338,7 @@ Table_map_log_event::Table_map_log_event(THD *thd, TABLE *tbl, ulong tid,
   else
     m_data_size+= m_field_metadata_size + 3; 
 
-  bzero(m_null_bits, num_null_bytes);
+  bzero((char *)m_null_bits, num_null_bytes); //sfh add 
   for (unsigned int i= 0 ; i < m_table->s->fields ; ++i)
     if (m_table->field[i]->maybe_null())
       m_null_bits[(i / 8)]+= 1 << (i % 8);
@@ -8588,7 +8588,7 @@ int Table_map_log_event::do_apply_event(Relay_log_info const *rli)
                                 NullS)))
     DBUG_RETURN(HA_ERR_OUT_OF_MEM);
 
-  bzero(table_list, sizeof(*table_list));
+  bzero((char *)table_list, sizeof(*table_list));  //sfh add
   table_list->db = db_mem;
   table_list->alias= table_list->table_name = tname_mem;
   table_list->lock_type= TL_WRITE;

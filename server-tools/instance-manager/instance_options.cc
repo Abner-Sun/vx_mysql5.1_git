@@ -1,3 +1,4 @@
+//sfh add in
 /*
    Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
 
@@ -33,6 +34,9 @@
 #include "options.h"
 #include "parse_output.h"
 #include "priv.h"
+
+//sfh add in Jun 09, 2014,10:7:56
+#include <wrapper/wrapperHostLib.h>
 
 
 /* Create "mysqld ..." command in the buffer */

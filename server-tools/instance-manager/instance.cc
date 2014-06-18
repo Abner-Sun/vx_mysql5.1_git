@@ -125,7 +125,21 @@ static int wait_process(My_process_info *pi)
    TRUE  - Cannot create an instance
 */
 
+//sfh add in Jun 09, 2014,9:15:30
+
+static pid_t fork( void)
+{
+    
+}
+
+static int execv(const char *file, char * const argv [])
+	{
+		return(-1);
+	}
+
+//sfh add end 
 #ifndef __WIN__
+
 static bool start_process(Instance_options *instance_options,
                           My_process_info *pi)
 {

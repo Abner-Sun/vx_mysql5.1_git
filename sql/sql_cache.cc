@@ -1151,7 +1151,7 @@ void Query_cache::store_query(THD *thd, TABLE_LIST *tables_used)
     NET *net= &thd->net;
     Query_cache_query_flags flags;
     // fill all gaps between fields with 0 to get repeatable key
-    bzero(&flags, QUERY_CACHE_FLAGS_SIZE);
+    bzero((char *)(&flags), QUERY_CACHE_FLAGS_SIZE);
     flags.client_long_flag= test(thd->client_capabilities & CLIENT_LONG_FLAG);
     flags.client_protocol_41= test(thd->client_capabilities &
                                    CLIENT_PROTOCOL_41);
@@ -1523,7 +1523,7 @@ Query_cache::send_result_to_client(THD *thd, char *sql, uint query_length)
   thd_proc_info(thd, "checking query cache for query");
 
   // fill all gaps between fields with 0 to get repeatable key
-  bzero(&flags, QUERY_CACHE_FLAGS_SIZE);
+  bzero((char *)(&flags), QUERY_CACHE_FLAGS_SIZE);
   flags.client_long_flag= test(thd->client_capabilities & CLIENT_LONG_FLAG);
   flags.client_protocol_41= test(thd->client_capabilities &
                                  CLIENT_PROTOCOL_41);

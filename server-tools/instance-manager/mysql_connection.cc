@@ -200,7 +200,7 @@ int Mysql_connection::check_connection()
   *pos++= (char) default_charset_info->number;  // global mysys variable
   int2store(pos, status);                       // connection status
   pos+= 2;
-  bzero(pos, 13);                               // not used now
+  bzero((char *)pos, 13);                               // not used now
   pos+= 13;
 
   /* second part of the scramble, null-terminated */

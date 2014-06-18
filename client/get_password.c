@@ -63,6 +63,8 @@
 /* were just going to fake it here and get input from
    the keyboard */
 
+
+
 char *get_tty_password(const char *opt_message)
 {
   char to[80];
@@ -147,7 +149,6 @@ static void get_password(char *to,uint length,int fd, my_bool echo)
 }
 
 #endif /* ! HAVE_GETPASS */
-
 
 char *get_tty_password(const char *opt_message)
 {

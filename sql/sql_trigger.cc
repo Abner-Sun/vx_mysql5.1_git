@@ -1760,7 +1760,7 @@ bool Table_triggers_list::drop_all_triggers(THD *thd, char *db, char *name)
   bool result= 0;
   DBUG_ENTER("drop_all_triggers");
 
-  bzero(&table, sizeof(table));
+  bzero((char *)(&table), sizeof(table));
   init_alloc_root(&table.mem_root, 8192, 0);
 
   if (Table_triggers_list::check_n_load(thd, db, name, &table, 1))
@@ -1978,7 +1978,7 @@ bool Table_triggers_list::change_table_name(THD *thd, const char *db,
   LEX_STRING *err_trigname;
   DBUG_ENTER("change_table_name");
 
-  bzero(&table, sizeof(table));
+  bzero((char *)(&table), sizeof(table));
   init_alloc_root(&table.mem_root, 8192, 0);
 
   /*

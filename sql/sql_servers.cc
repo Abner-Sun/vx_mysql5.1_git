@@ -513,6 +513,12 @@ store_server_fields(TABLE *table, FOREIGN_SERVER *server)
     >0 - error code
 
   */
+//sfh add
+#define empty_record3(A) { \
+                          restore_record((A),s->default_values); \
+                          bfill((char *)((A)->null_flags),(A)->s->null_bytes,255);\
+                        }
+
 
 static
 int insert_server_record(TABLE *table, FOREIGN_SERVER *server)
@@ -521,7 +527,7 @@ int insert_server_record(TABLE *table, FOREIGN_SERVER *server)
   DBUG_ENTER("insert_server_record");
   table->use_all_columns();
 
-  empty_record(table);
+  empty_record3(table);
 
   /* set the field that's the PK to the value we're looking for */
   table->field[0]->store(server->server_name,

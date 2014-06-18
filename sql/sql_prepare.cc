@@ -2760,7 +2760,7 @@ public:
                     MYSQL_ERROR::enum_warning_level level,
                     THD *)
   {
-    stmt->state= Query_arena::ERROR;
+    stmt->state= Query_arena::ERROR_state; //sfh add
     stmt->last_errno= sql_errno;
     strncpy(stmt->last_error, message, MYSQL_ERRMSG_SIZE);
 
@@ -2818,7 +2818,7 @@ void mysql_stmt_get_longdata(THD *thd, char *packet, ulong packet_length)
   if (param_number >= stmt->param_count)
   {
     /* Error will be sent in execute call */
-    stmt->state= Query_arena::ERROR;
+    stmt->state= Query_arena::ERROR_state;  //sfh add
     stmt->last_errno= ER_WRONG_ARGUMENTS;
     sprintf(stmt->last_error, ER(ER_WRONG_ARGUMENTS),
             "mysqld_stmt_send_long_data");
@@ -3303,7 +3303,7 @@ Prepared_statement::execute_loop(String *expanded_query,
   int reprepare_attempt= 0;
 
   /* Check if we got an error when sending long data */
-  if (state == Query_arena::ERROR)
+  if (state == Query_arena::ERROR_state)  //sfh add
   {
     my_message(last_errno, last_error, MYF(0));
     return TRUE;

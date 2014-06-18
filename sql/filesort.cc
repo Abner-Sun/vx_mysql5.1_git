@@ -787,7 +787,7 @@ static void make_sortkey(register SORTPARAM *param,
 	if (field->is_null())
 	{
 	  if (sort_field->reverse)
-	    bfill(to,sort_field->length+1,(char) 255);
+	    bfill((char *)to,sort_field->length+1,(char) 255); //sfh add
 	  else
 	    bzero((char*) to,sort_field->length+1);
 	  to+= sort_field->length+1;

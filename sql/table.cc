@@ -1553,8 +1553,8 @@ static int open_binary_frm(THD *thd, TABLE_SHARE *share, uchar *head,
   {
     /* Old file format with default as not null */
     uint null_length= (share->null_fields+7)/8;
-    bfill(share->default_values + (null_flags - (uchar*) record),
-          null_length, 255);
+    bfill((char *)(share->default_values + (null_flags - (uchar*) record)),
+          null_length, 255); // sfh add 
   }
 
   if (share->found_next_number_field)
@@ -2164,7 +2164,7 @@ ulong make_new_entry(File file, uchar *fileinfo, TYPELIB *formnames,
 	DBUG_RETURN(0);
       endpos-=bufflength; bufflength=IO_SIZE;
     }
-    bzero(buff,IO_SIZE);			/* Null new block */
+    bzero((char *)buff,IO_SIZE);			/* Null new block */  //sfh add 
     VOID(my_seek(file,(ulong) maxlength,MY_SEEK_SET,MYF(0)));
     if (my_write(file,buff,bufflength,MYF(MY_NABP+MY_WME)))
 	DBUG_RETURN(0L);
@@ -2543,7 +2543,7 @@ File create_frm(THD *thd, const char *name, const char *db,
       61 for default_part_db_type
     */
     int2store(fileinfo+62, create_info->key_block_size);
-    bzero(fill,IO_SIZE);
+    bzero((char *)fill,IO_SIZE); //sfh add
     for (; length > IO_SIZE ; length-= IO_SIZE)
     {
       if (my_write(file,fill, IO_SIZE, MYF(MY_WME | MY_NABP)))

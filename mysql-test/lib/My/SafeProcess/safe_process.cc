@@ -1,3 +1,4 @@
+//sfh add in
 /* Copyright (c) 2008, 2012, Oracle and/or its affiliates. All rights reserved.
 
    This program is free software; you can redistribute it and/or modify
@@ -146,7 +147,28 @@ extern "C" void handle_signal(int sig)
   // finally terminated by monitor loop
 }
 
+//sfh add in Jun 09, 2014,9:15:30
+static pid_t fork( void)
+{
+    
+}
 
+static int setpgid(pid_t pid,pid_t pgid)
+{
+	return(-1);
+}
+
+static int setrlimit(int resource, const struct rlimit *rlim)
+{
+	return(-1);
+}
+
+static int execvp(const char *file, char * const argv [])
+{
+	return(-1);
+}
+
+//sfh add end
 int main(int argc, char* const argv[] )
 {
   char* const* child_argv= 0;
